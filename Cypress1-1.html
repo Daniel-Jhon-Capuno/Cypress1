@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поцелуй у могилы</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #f7f3e9;
+            --text-color: #333;
+            --accent-color: #7a5230;
+            --paper-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            letter-spacing: 0.02em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .book-page {
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: #fffaf0;
+            box-shadow: var(--paper-shadow);
+            padding: 100px 40px;
+            min-height: 100vh;
+            display: none; 
+        }
+
+        .book-page.active {
+            display: block;
+        }
+
+        .book-page.active#page-0 {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .title-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: calc(100vh - 200px); /* Adjust for padding */
+        }
+
+        .language-switcher {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .language-btn {
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Merriweather', serif;
+            font-weight: 400;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .language-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--background-color);
+        }
+
+        h1.main-title {
+            font-size: 5em;
+            color: var(--accent-color);
+            margin: 0;
+        }
+        
+        .letter-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: calc(100vh - 200px); /* Adjust for padding */
+        }
+
+        h2.date {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+        
+        p {
+            font-size: 1em;
+            margin-bottom: 15px;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .poem-text {
+            text-align: left;
+        }
+        
+        .english-text {
+            display: none;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Merriweather', serif;
+            font-weight: 400;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--background-color);
+        }
+
+        @media (max-width: 768px) {
+            .book-page {
+                padding: 20px;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1.main-title {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="book-page active" id="page-0">
+        <section class="title-section">
+            <h1 class="main-title" id="main-title">Поцелуй у могилы</h1>
+            <div class="language-switcher">
+                <button class="language-btn" onclick="toggleLanguage()">Язык: Русский</button>
+            </div>
+        </section>
+        <div class="navigation">
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+    
+    <!-- New Page with your note -->
+    <div class="book-page" id="page-1">
+        <div class="letter-content" style="text-align: center;">
+            <p>NOTE: These letters are only imaginary. I only made it because I am bored and sleep-deprived. This is to stall time for the insomnia to ward off:></p>
+            <p style="margin-top: auto;">by DJ</p>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+
+    <!-- New Page with historical context (now page-2) -->
+    <div class="book-page" id="page-2">
+        <div class="letter-content">
+            <div class="russian-text">
+                <p>В 1917 году Россия оказалась на пороге смерти, охваченная великой и беспощадной войной. Она стала могилой, оставляя после себя лишь жетоны как безмолвных свидетелей тех, кто когда-то сомневался в собственной человечности. Дни сменялись месяцами, месяцы — годами, и казалось, что войне нет конца. Среди этого хаоса поднимались крики протеста против перекрестного огня, но даже эти отважные возгласы сопротивления были заглушены выстрелами. Для тех, кто осмеливался противостоять этой буре, смерть была гарантирована прямо у порога, а их собственные идеалы были погребены глубоко под тяжестью пуль, за которыми следовал дым.</p>
+                <p>В этой войне люди больше не воспринимались как отцы, сыновья или братья — они были сведены к роли оружия, к ботинкам в грязи и винтовкам в руках. Военные самолеты стали звуками птиц; вспышки выстрелов затмевали мерцающий свет свечей. Детей убаюкивали не колыбельные, а военные крики. Церкви, когда-то бывшие убежищами мира, превратились в переполненные кладбища, где мертвых было больше, чем живых.</p>
+                <p>Смерть не делала различий: солдат, политик, фермер или ребенок — все ложились одинаково, когда их забирала война. У них не было больше власти, кроме их имени, выгравированного на жетоне, прошептанного в скорби или вырезанного на пуле.</p>
+                <p>Эта война ранила не только тело, но и сокрушала веру. Слезы высыхали на лицах скорбящих. Дети учились сомневаться в самой человечности еще до того, как научились произносить свое имя. Их руки, предназначенные для того, чтобы ощущать тепло родителей, вместо этого сжимали винтовки, слишком тяжелые для их маленьких тел. Они учились бежать, потому что стоять на месте было неминуемым приглашением к смерти. Каждый день они видели, как жизнь ускользает, и горизонт больше не сулил мечтаний, а лишь обещал дым.</p>
+                <p>На этой пропитанной кровью земле гильзы были семенами, которые они сажали, каждая из которых служила безмолвным памятником павшему другу. Каждая пуля несла в себе слезу, роковой поцелуй, который стучался в двери смерти. Потерянный палец, потерянные конечности — это не больше, чем мелочь, по сравнению с тем, чтобы потерять кого-то дорогого. Это была не сентиментальность, а военный клич.</p>
+                <p>Это была кровавая баня, которая длилась дольше, чем должны были длиться годы жизни любого человека, даже взрослые не могли сосчитать свои дни жизни. Дни рождения перестали быть праздниками жизни и вместо этого стали отметками выживания — выживания в войне, рожденной не простолюдинами, а выкованной амбициями политиков.</p>
+                <p>Тебя помнят не по имени, рождению или даже мечтам, а по медали, которая длится лишь один день.</p>
+                <p>И поэтому Россия в 1917 году была уже не той родиной, которую когда-то представляли. Она стала могилой, пропитанной кровью своих собственных детей.</p>
+            </div>
+            <div class="english-text">
+                <p>In the year 1917, Russia found itself on death’s door by a great and merciless war. It was a tomb, leaving behind only dog tags as silent witnesses to those who once questioned their own humanity. Days bled into months, months into years, and the war seemed endless. Amidst this chaos, cries of protest rose against the crossfire, yet even that, the brave cries of opposition were silenced by gunfire. Many who opposed the storm found death guaranteed at their doorsteps; their own ideals were buried deep beneath the weight of bullets, followed by smoke.</p>
+                <p>In this war, men were no longer seen as fathers, sons, or brothers — they were reduced to weapons, to mere boots upon the mud, and rifles in their hands. Warplanes now made the sounds of birds; the flash of gunfire outshone the flickering light of candles. Children were silenced not by lullabies, but by war cries. Churches, once sanctuaries of peace, became crowded graveyards where the dead outnumbered the living.</p>
+                <p>There was no distinction in death: soldier, politician, farmer, or child — all lay the same when claimed by war. They held no more power than their name, etched on a tag, whispered in mourning, or carved on a bullet.</p>
+                <p>This war did not only wound the body but shattered belief. Tears dried upon the faces of the grieving. Children learned to question humanity itself before they even learned how to pronounce their name. Their hands, meant to hold their parents' warmth, instead gripped rifles too heavy for their small bodies. They learned to run, for standing still was an inevitable invitation to death. Each day they witnessed life slipping away, and the horizon no longer held dreams, only holds the promise of smoke.</p>
+                <p>On this blood-soaked ground, bullet casings were the seeds they planted, each one a silent memorial to a fallen friend. Each bullet held a teardrop, a fatal kiss that would knock on death's door. Missing thumbs or limbs were mere trifles compared to missing someone dearly. This wasn't a sentiment, it was a war cry.</p>
+                <p>It was a bloodbath, longer than what any man’s years should endure; not even grown-ups could count their own days of living. Birthdays ceased to be celebrations of life and instead became marks of survival — survival in a war not born from the commoners but forged by the ambitions of politicians.</p>
+                <p>You were not remembered by your name, birth, or even dreams, but by a medal that lasts only a day.</p>
+                <p>And so, Russia in 1917 was not the motherland that had once been envisioned. It had become a grave, soaked in the blood of its own children.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+    
+    <!-- New Page with Elnovich's letter -->
+    <div class="book-page" id="page-3">
+        <div class="letter-content">
+            <div class="russian-text">
+                <p style="text-align: center; font-style: italic;">Письмо, найденное в дневнике человека по имени Ельнович</p>
+                <h2 class="date" data-ru="27 декабря 1917 г." data-en="December 27, 1917">27 декабря 1917 г.</h2>
+                <p>Я пишу при последнем дыхании этой угасающей свечи. Воск тает, как и дни моей жизни — растраченные, незамеченные — а я, трус, сижу здесь и считаю их.</p>
+                <p>Михаил — я не слышал его имени месяцами, за исключением уст его жены. Катя молится за него. Я встретил её однажды, до войны, её глаза были полны веры. Интересно, молится ли она сейчас? Или её молитвы превратились в обвинения, брошенные в небеса? А что насчёт их мальчика? Он не знает, не может знать, что каждый игрушечный солдатик, которого он опрокидывает, — это ещё одни похороны его отца. Его смех становится лопатой — хороня его, хороня его снова и снова. Только если бы его сын мог понять, что каждая слеза его матери несёт немного веры, для него и для его отца. Наблюдение за этими игрушечными солдатиками кажется издевательством над его матерью. Они не видят в них просто игрушки, а скорее кладбище.</p>
+                <p>Я думаю о Дмитрии, который обещал своему брату вернуться к Рождеству. Какая наивная храбрость! Он не вернулся, и само Рождество кажется ложью. Его брат Калашников ждёт, полумальчик, полумужчина, вглядываясь в виселицу собственного сердца. Возможно, лучше ждать в неведении, чем знать правду — да, да, неведение! Благословенное неведение! Ибо правда — это петля, и каждый человек видит свою собственную тень, уже висящую.</p>
+                <p>Фабрики поют свой собственный реквием, звучащий как колыбельная для пуль, которые они производят. Я слышал о Козловой, её руки разорваны и кровоточат, она лепит пули, как будто это бусины для молитвы. Каждая пуля — это преступление, и всё же мы лелеем их, как детей, как будто сама смерть — наше спасение. Какое противоречие! мы убиваем, потому что должны, и убивая, мы разрушаем то немногое, что от нас осталось. Эти пули, которые они делают, несут слезу, скорбь и крик их собственного соотечественника. О, в какую же они втянуты в богохульство. Создавая собственное разрушение и с трудом справляясь с последствиями!</p>
+                <p>Хлебные бунты — ах, это была не политика, а голод. Крик матери — это не идеология; это само отчаяние! И пока она воет, политики пьют своё вино, они наполняют свои бокалы до краёв, а их смех! Их смех! Он заглушает детей, грызущих камни. И они думают о справедливости? Где она? Не говори мне о молчании небес — виновны не небеса, а люди. Власть! Вот их Бог. Дай человеку ружьё, и он напишет своё собственное евангелие, залитое кровью его собственного соотечественника. А мы — дураки! — мы следуем за ним в могилу.</p>
+                <p>А затем пришла Революция. Некоторые называли её свободой. Но она больше походила на вздох — не радости, а капитуляции. Мы были слишком усталы для надежды. Слишком разбиты для триумфа. Слишком пусты, чтобы праздновать так называемую свободу.</p>
+                <p>Они составят список, миллионы чисел имён, отмеченных как «Мёртвые». Они будут писать о миллионах, как будто души — это монеты, которые можно сосчитать и забыть. Но каждый — каждый! — дрожал перед Богом, молясь, как ребёнок! А числа? Числа действительно ложь… смерть — это тишина, которая плачет в вечности.</p>
+                <p>Теперь, когда я заканчиваю, я должен признаться, что в человечество я должен вернуться, и чтобы быть человеком, я должен принять, что будучи человеком, я сумасшедший, я говорю очень много внутри себя — о, бесконечно! — но когда раздаётся выстрел, я ползу, я сжимаюсь, я прячусь в платье своей матери, как ребёнок. Я говорю о ненависти, о кулаках и даже о крови — но я не могу даже сжать свою собственную руку в кулак! Сумасшедший, да, сумасшедший! Скажите мне, это война сделала меня таким, или я всегда был таким? И если так — то что такое человек?</p>
+            </div>
+            <div class="english-text">
+                <p style="text-align: center; font-style: italic;">A letter found in a diary of a man named Elnovich</p>
+                <h2 class="date" data-ru="27 декабря 1917 г." data-en="December 27, 1917">December 27, 1917</h2>
+                <p>By the final breath of this expiring taper I write. The wax melts down as the days of my life, wasted, unnoticed — and I, a coward, sit here counting them.</p>
+                <p>Mikhail — I have not heard his name spoken in months, save for on the lips of his wife. Katya prays for him. I had encountered her once, pre-war, her eyes full of faith. I wonder now, does she still pray? Or have her prayers soured into accusations against the heavens? And what of their boy? He does not know, cannot know, that each toy soldier he topples is another funeral for his father. His laughter becomes a spade — burying him, burying him again and again. Only if his son can understand that each tear of his mother carries a little faith, for him and for his father. To watch those toy soldiers seems like to mock her mother. They don’t see it as mere toys but rather a graveyard.</p>
+                <p>I think of Dmitri, who promised his brother to return for the night of Christmas. What naive courage! He has not returned, and Christmas itself feels like a lie. His brother Kalashnikov waits, half-boy, half-man, staring into the gallows of his own heart. Perhaps it is better to wait in ignorance than to know the truth — yes, yes, ignorance! Blessed ignorance! For the truth is a noose, and each man sees his own shadow hanging already.</p>
+                <p>The factories sing their own requiem, sounding like a lullaby to the bullets they’re making. I heard of Kozlova, her hands torn and bleeding, shaping bullets as if they were beads for prayer. Every bullet is a crime, and yet we cradle them like children, as though death itself were our salvation. What a contradiction! we kill because we must, and in killing we destroy what little of ourselves remains. Those bullets they make carries a tear drop, a mourn, and a cry from their own fellow man. Oh, what blasphemy they are tied into. Creating their own destruction and having a hard time dealing with the aftermath!</p>
+                <p>The bread riots — ah, those were not politics, but hunger. A mother’s cry is not an ideology; it is despair itself! And while she howls, the politicians drink their wine, they fill their brim to the fullest, and their laugh! Their laughter! Its drowning out the children gnawing on stones. And they think about justice? Where is it? Do not speak to me of heaven’s silence — it is not heaven but men who are guilty. Power! That is their God. Give a man a gun and he will write his own gospel, drenched in blood from his own country man. And we—fools! —we follow him to the grave.</p>
+                <p>And then the Revolution came. Some called it freedom. But it felt more like a sigh — not of joy, but of surrender. We were too tired for hope. Too ruined for triumph. Too empty to celebrate a what so called freedom.</p>
+                <p>They will write a tally of numbers, millions of numbers of name that listed quoting “Dead”, They will write of millions, as though souls were coins, to be counted and forgotten. But each one — each one! — was trembling before God, begging like a child! And numbers? Numbers are indeed lies… death is a silence that cries in eternity.</p>
+                <p>Now that I am ending this, I must confess that in humanity I must return, and to be human I must accept, that upon being human I am a mad man, I speak much inside myself — oh, endlessly! — but when a gun fires, I crawl, I shrink, I hide in my mother’s dress like a child. I speak of hatred, of fists, and even blood — but I cannot even clench my own hand to make a fist! A madman, yes, a madman! Tell me, did the war make me so, or was I always thus? And if so — then what is man?</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+
+  <!-- Letter 1 (now on page-3) -->
+    <div class="book-page" id="page-4">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="Имя, которое является жизнью г." data-en="A name that is a life">Имя, которое является жизнью г.</h2>
+                <p>Каждый человек умирает дважды: один раз, когда он падает, и один раз, когда его имя больше не произносят. Эти письма сопротивляются этой второй смерти. Это не история и не свидетельство. Это только упорство имени, Селин, произнесённого вопреки пустоте.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="Имя, которое является жизнью г." data-en="A name that is a life">A name that is a life</h2>
+                <p>Every man dies twice: once when he falls, and once when his name is no longer spoken. These letters resist that second death. They are not history, nor testimony. They are only the persistence of a name, Celine, spoken against the void</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+
+    <!-- Letter 1 (now on page-3) -->
+    <div class="book-page" id="page-5">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="14 сентября 1917 г." data-en="September 14, 1917">14 сентября 1917 г.</h2>
+                <p>Всё дело в глазах, Селин… всегда в глазах. Там ты увидишь, что мы не более чем люди. На этой войне — нашей, их, чьей угодно — мы остаёмся всего лишь людьми. Война не закончится, боюсь я, Селин — меняется только поле боя. Наши мундиры не наши, они сшиты из молчания павших товарищей, сшиты нитями их некогда ценной жизни. Вот что нас разделяет — не кровь, не мысли — только ткань… Селин, только ткань. И всё же, когда ты смотришь на них, по-настоящему смотришь, в их пустые глаза, ты видишь не солдат, а остатки их мечтаний. Война не просто забрала тело; она поглотила видения детей, которые когда-то верили в тепло завтрашнего дня. Их глаза, Селин, кричат о той же боли, о той же скрытой ране под их мундиром. И, возможно, в этом самая большая жестокость… не в том, что людей убивают, а в том, что их мечты носят ту же смерть.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="14 сентября 1917 г." data-en="September 14, 1917">September 14, 1917</h2>
+                <p>It is in the eye, Celine… always in the eye. There you will see that we are nothing but human. In this war — ours, theirs, anyone’s — we remain only nothing but human. The war does not end, I fear not, Celine—only the battlefield changes. Our uniforms are not ours, they are stitched from the silence of fallen comrades, stitched by the threads of their once valued life. That is what separates us, not blood, not thought — only cloth… Celine, only cloth. Yet when you look at them, truly when you look at them, inside their empty eyes, you will see not soldiers, but the remnants of dreams. The war did not just collect a mere body; it devoured the visions of children who once believed in tomorrow’s warmth. Their eyes, Celine, scream the same pain, the same hidden wound beneath their very uniform. And perhaps that is the greatest cruelty... not that men are killed, but that their dreams wear the same death.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+    
+    <!-- Letter 2 (now on page-4) -->
+    <div class="book-page" id="page-6">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="19 сентября 1917 г." data-en="September 19, 1917">19 сентября 1917 г.</h2>
+                <p>Некоторые из этих мужчин скоро увидят свой собственный восход. Другие… они вернутся домой. И что их ждёт, так это не парады и не медаль, висящая в воздухе. Это будет ответственность — но такого рода, которая ощущается живой, которая ощущается как солнце в середине сентября. Такая, что делает зиму менее холодной. Ребёнок, дёргающий их за рукав, объятия жены, рука матери, ласкающая их щёку и желающая им спокойной ночи. Вот это — долг, который стоит нести. Поцелуи в щёку, объятия, которые длятся. А не тонкая жестянка на верёвке, висящая на шее. Слава медалей меркнет после церессии. Но тепло — тепло остаётся.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="19 сентября 1917 г." data-en="September 19, 1917">September 19, 1917</h2>
+                <p>Some of these men will soon see their own sunrise. Others… they’ll go home. And what awaits them won’t be parades nor a medal that hangs in the air. It’ll be responsibility — but the kind that feels alive, that feels like the sun in mid-September. The kind that makes winter less cold. A child tugging at their sleeve, a wife’s arms wrapping around them, a mother’s hand brushing their cheek, and wishes them a good night's sleep. That’s the kind of duty worth carrying. Kisses on the cheek, hugs that last. And not a thin can on a string hanging on the neck. The glory of medals fades after the ceremony. But warmth — warmth stays.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+    
+    <!-- Letter 3 (now on page-6) -->
+    <div class="book-page" id="page-7">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="26 сентября 1917 г." data-en="September 26, 1917">26 сентября 1917 г.</h2>
+                <p>Дорогая Селин,<br>Я теперь ношу имя моего товарища и фотографию его жены. У них есть дочь — Вера, всего два года — и ещё один ребёнок на подходе, всё ещё в животе у матери. Он часто говорил о них, когда ночи были долгими в окопах, особенно когда мы чистили картошку. Он хотел увидеть, как Вера идёт по большому проходу церкви в Онежском озере, услышать её маленькие шаги, идущие по проходу. Он хотел однажды увидеть своего мальчика, едущего верхом на лошади, помогающего своей мамочке с гордыми маленькими ручками. Но этим мечтам пришёл конец в ту ночь, когда он поцеловал пулю от другого солдата, в ту ночь, когда пуля убаюкала его спать недалеко от окопов. Всё, что осталось, — это фотография, которую я держу, фотография, подписанная поцелуем моего павшего товарища, фотография, которая теперь должна нести его мечты, потому что он больше не может.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="26 сентября 1917 г." data-en="September 26, 1917">September 26, 1917</h2>
+                <p>Dear Celine,<br>I am carrying my comrade’s name now, and a picture of his wife. They have a daughter — Vera, just two years old — and another child on the way, still in her mother’s belly. He used to talk about them when the nights were long inside the trenches, especially when we peeled potatoes. He wished to see Vera walk down the great hallway of the church in Lake Onega, to hear her little footsteps walking down the aisle. He wanted to see his boy one day, riding a horse, helping his momma with proud little hands. But those wishes ended the night he kissed a bullet from another army man, the night a bullet tucked him to sleep not far from the trenches. All that’s left is the picture I hold, a picture that was signed by a kiss from my fallen comrade, a picture that must now carry his dreams because he no longer can.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+
+    <!-- Letter 4 (now on page-6) -->
+    <div class="book-page" id="page-8">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="29 сентября 1917 г." data-en="September 29, 1917">29 сентября 1917 г.</h2>
+                <p class="poem-text">Дорогая Селин,<br>Я всё ещё слышу голос моего товарища.<br>Он кричал, что скучает по своей матери.<br>Он кричал, что скучает по ней гораздо больше, чем вчера<br>Он кричал, как ему не хватало её стряпни —<br>особенно тёплого борща, который она готовила каждый вечер.<br><br>Здесь,<br>на холоде,<br>Его сломила<br>не война.<br>Его сломила<br>мысль о кухне,<br>о кастрюле,<br>из которой шёл тёплый пар,<br>Эхо смеха<br>его братьев и сестёр,<br>и<br>мать, ждущая его возвращения домой.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="29 сентября 1917 г." data-en="September 29, 1917">September 29, 1917</h2>
+                <p class="poem-text">Dear Celine<br>I still hear my comrade’s voice.<br>He shouted that he missed his mother.<br>He shouted that he misses her much more than yesterday<br>He screamed how he missed her cooking —<br>especially the warm Borscht she made every night.<br><br>Out here,<br>in the cold,<br>It wasn’t<br>the war that broke him.<br>It was the<br>thought of a kitchen,<br>a pot<br>warmly steaming,<br>The echo of<br>his sibling’s laughter,<br>and a<br>mother waiting for him to come home.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+
+    <!-- Letter 5 (now on page-7) -->
+    <div class="book-page" id="page-9">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="19 октября 1917 г." data-en="October 19, 1917">19 октября 1917 г.</h2>
+                <p>Я скучаю по тебе, Селин. Теперь я понимаю, что чувствовал мой товарищ, когда он кричал, обращаясь к своей матери. Потому что теперь я нахожу себя кричащим твоё имя. Гораздо громче, чем вчера.</p>
+                <p>Каждый раз, когда я просыпаюсь, первое, к чему я тянусь, — это не моё ружьё, а эта самая ручка, с этой истончающейся бумагой. Всегда, чтобы писать тебе. Всегда.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="19 октября 1917 г." data-en="October 19, 1917">October 19, 1917</h2>
+                <p>I miss you, Celine.<br>Now I understand what my comrade felt<br>When he shouted for his mother.<br>Because now I find myself shouting your name.<br>Much louder than it was yesterday</p>
+                <p>Each time I wake,<br>The first thing I reach for is not my gun,<br>But this very pen, with this thinning paper.<br>Always to write to you.<br>Always.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+
+    <!-- Letter 6 (now on page-8) -->
+    <div class="book-page" id="page-10">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="18 ноября 1917 г." data-en="November 18, 1917">18 ноября 1917 г.</h2>
+                <p>Дорогая Селин,<br>Это письмо несёт поцелуй, втиснутый между строк и пробелов, которые ты заметишь. Я скучаю по твоему теплу и по твоему голосу, который ощущается, как ирландская весна, убаюкивающий меня в нашу кровать, напевающий колыбельную мне на ухо.<br>Селин, пусть мои слова несут благословение, которое поможет тебе. С этим письмом я отправляю тебе часть себя, Селин. Это моя душа. Это моя жизнь, это твоя.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="18 ноября 1917 г." data-en="November 18, 1917">November 18, 1917</h2>
+                <p>Dear Celine<br>This letter carries a kiss,<br>pressed between the lines and gaps that you will notice.<br>I miss your warmth,<br>and your voice that feels like an Irish spring<br>tucking me into our bed<br>Singing a lullaby softly in my ears<br>Celine, may my words carry a blessing that would help you. With this letter, I send you a part of me, Celine.<br>It is my soul. That is my life, that is yours.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+
+    <!-- Letter 7 (now on page-9) -->
+    <div class="book-page" id="page-11">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="27 ноября 1917 г." data-en="November 27, 1917">27 ноября 1917 г.</h2>
+                <p>Дорогая Селин,<br>Ни один человек не смог бы измерить мою тоску по тебе. Она сдирает с меня мои грехи, оставляя меня обнажённым. Она отбирает у меня любую силу, которую я здесь притворяюсь, что имею. О, как я скучаю по ночам, когда мы вместе смотрели на луну. Мы целовались, мы смеялись, и ты плакала, пока ты лежала, положив голову мне на плечо. Мы несли и радость, и горе в наших руках. И в тот момент луна была там. И на мгновение я тоже был там.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="27 ноября 1917 г." data-en="November 27, 1917">November 27, 1917</h2>
+                <p>Dear Celine,<br>No man could measure my longing for you. It strips me off my sins, leaving me bare it takes away whatever strength I pretend to have here. Oh, how I miss the nights we watched the moon together. We kissed, we laughed, and you cried While you rest your head on my shoulder we carried both joy and sorrow in our hands. And in that moment, the moon was there. And for a moment, so was I.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+
+    <!-- Letter 8 (now on page-10) -->
+    <div class="book-page" id="page-12">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="24 декабря 1917 г." data-en="December 24, 1917">24 декабря 1917 г.</h2>
+                <p>Дражайшая Селин,<br>Год умирает этой ночью, а я всё ещё здесь. Снег тяжело падает на окоп, и хотя пальцы мои немеют, я всё равно пишу — потому что это ты поддерживаешь меня, мои зимние перчатки. Другие поют песни надломленными голосами, некоторые напевают колыбельные, которые они смутно помнят из детства, продолжая то, что вспомнил другой, и соединяя это. А я молчу, но в моём молчании я слышу твой голос.</p>
+                <p>Говорят, эта ночь для семей, для тепла у огня, для Хлеба и Борща, что наполняют живот. Но здесь у нас есть только огонь пороха и горький дым, который цепляется за наши шинели. И всё же, я мечтаю — я мечтаю о твоих руках, что обнимают мои, согревая меня лучше любого очага, любого горячего угля. Я мечтаю о том, как ты ставишь борщ на стол, улыбаясь так, будто мир никогда не знал войны. И знал только комфорт до конца человеческой жизни.</p>
+                <p>Селин, когда я закрываю глаза, я почти чувствую это. Я почти чувствую себя дома.</p>
+                <p>Я не знаю, что принесёт следующий год — приведёт ли он меня к тебе или судьба похоронит меня глубже в эту землю. Но если я паду, я хочу, чтобы ты знала: моей последней мыслью будет не война, не медали и не могилы. Это будешь ты. Всегда ты. Каждый оставшийся у меня удар сердца, Селин, уже твой.</p>
+                <p>Ничто не стоит перед тобой.</p>
+                <p>Счастливого Рождества, моя любовь.</p>
+                <p>Я надеюсь, что Бог знает мои желания — пусть Он позволит моим словам найти тебя.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="24 декабря 1917 г." data-en="December 24, 1917">December 24, 1917</h2>
+                <p>Dearest Celine,<br>The year dies tonight, yet here I remain. The snow falls heavy upon the trench, and though my fingers stiffen, I still write — because it is you that keeps me alive, my zimnie perchatki. The others sing songs in broken voices, some hum lullabies they half-remember from childhood, continuing what the other had remembered and connecting it. While I keep silent, but in my silence, I hear your voice.</p>
+                <p>They say tonight is for families, for warmth by the fire, for Khleb and Borscht that fills the belly. But here, all we have is the fire of gunpowder and the bitter smoke that clings to our coats. And still, I dream — I dream of your hands wrapping mine, warming me better than any hearth, than any hot coal. I dream of you setting Borscht on the table, smiling as though the world had never known war. And had only known comfort for the rest of the human life.</p>
+                <p>Celine, when I close my eyes, I almost feel it. I almost feel home.</p>
+                <p>I do not know what the next year will bring — if it will bring me to you or will fate bury me deeper in this soil. But if I fall, I want you to know: my last thought will not be of war, nor of medals, nor of graves. It will be you. Always you. Every heartbeat I have left, Celine, is already yours.</p>
+                <p>Nothing comes before you.</p>
+                <p>Merry Christmas, my love.</p>
+                <p>I hope God knows my wishes — may He let my words find you.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+
+    <!-- Letter 9 (now on page-12) -->
+    <div class="book-page" id="page-13">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="31 декабря 1917 г." data-en="December 31, 1917">31 декабря 1917 г.</h2>
+                <p class="poem-text">Дорогая Селин,<br>Пока я дышу твоим именем,<br>Дух моего прошлого успокаивается, чтобы отдохнуть.<br>В долину мучительных скорбей, он ступает на цыпочках —<br>Под лунным светом, где когда-то он знал веселье.<br><br>Он стенал реке,<br>Где когда-то он танцевал.<br>Пока моё дыхание цепляется за редеющий воздух,<br>Мои глаза шепчут —<br><br>Что каждая буква в твоём имени<br>Выписывает бесконечную скорбь.<br>Мои руки не могут обнять тебя сейчас,<br>Но всё же мой дух следует за тобой.<br><br>Однажды я знал, как я хотел бы, чтобы жизнь закончилась:<br>Глубоко в твоих объятиях я бы позволил своей душе отдохнуть —<br>Где сожаления и похороненные желания<br>Уложили бы своё горе спать.<br><br>Теперь, когда моя бумага подходит к последнему листу,<br>Я призываю её последние поэмы, поэтов, сонеты —<br>Они повторяют эхом все мои слова<br>И нежно называют их блаженством.<br><br>Моих оставшихся чернил хватит только на одно слово.<br>Ради этих последних следов, я надеюсь, что смогу<br>Позволить им кровоточить, позволить им остаться.<br><br>Пусть это письмо найдёт тебя невредимой, Селин.<br>И если меня больше не будет, чтобы читать твоё имя,<br>Знай, что я прошептал его последним.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="31 декабря 1917 г." data-en="December 31, 1917">December 31, 1917</h2>
+                <p class="poem-text">Dear Celine<br>As I breathe your name,<br>A spirit of my past calms to rest.<br>To a valley of tormented sorrows, it tiptoes —<br>Beneath the moonlight where it once knew glee.<br><br>It wailed to a river,<br>Where once it danced.<br>As my breath clings to the thinning air,<br>My eyes whisper —<br><br>That every letter in your name<br>Spells out an endless sorrow.<br>My hands can’t hold you now,<br>But still, my spirit follows.<br><br>Once, I knew how I’d like life to end:<br>Deep in your arms, I’d let my soul rest —<br>Where regrets and buried desire<br>Would lay their griefs to sleep.<br><br>Now, as my paper nears its final leaf,<br>I invoke its final poems, poets, sonnets —<br>They echo all my words<br>And gently name them with bliss.<br><br>My remaining ink will only last me a word.<br>For these final marks, I hope that I could<br>Let them bleed, let them last.<br><br>May this letter find you well, Celine.<br>And if I am no longer there to read your name,<br>Know that I whispered it last.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+            <button class="nav-btn" onclick="nextPage()">→</button>
+        </div>
+    </div>
+
+    <!-- Letter 9 (now on page-12) -->
+    <div class="book-page" id="page-14">
+        <div class="letter-content">
+            <div class="russian-text">
+                <h2 class="date" data-ru="Письмо, найденное в дневнике г." data-en="A letter found inside a diary">Письмо, найденное в дневнике г.</h2>
+                <p class="poem-text">Война дала мне свободу, но свобода без сердца — это лишь затяжная смерть.<br>И потому я всё ещё говорю — имя, пустота, призрак любви: Селин.</p>
+            </div>
+            <div class="english-text">
+                <h2 class="date" data-ru="Письмо, найденное в дневнике г." data-en="A letter found inside a diary">A letter found inside a diary</h2>
+                <p class="poem-text">The war gave me freedom, but freedom without a heart is only death prolonged.<br>And so I speak still — a name, a hollow, a ghost of love: Celine.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousPage()">←</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentPage = 0;
+        const totalPages = document.querySelectorAll('.book-page').length;
+
+        function showPage(pageIndex) {
+            const pages = document.querySelectorAll('.book-page');
+            pages.forEach((page, index) => {
+                if (index === pageIndex) {
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+            window.scrollTo(0, 0); // Scroll to the top of the new page
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        }
+        
+        function toggleLanguage() {
+            const russianDivs = document.querySelectorAll('.russian-text');
+            const englishDivs = document.querySelectorAll('.english-text');
+            const button = document.querySelector('.language-btn');
+            const mainTitle = document.getElementById('main-title');
+            const dates = document.querySelectorAll('.date');
+            
+            const isRussianVisible = russianDivs[0].style.display !== 'none';
+
+            if (isRussianVisible) {
+                russianDivs.forEach(div => div.style.display = 'none');
+                englishDivs.forEach(div => div.style.display = 'block');
+                button.textContent = 'Язык: English';
+                mainTitle.textContent = 'A kiss by the grave';
+                document.title = 'A kiss by the grave';
+                dates.forEach(date => {
+                    date.textContent = date.dataset.en;
+                });
+            } else {
+                russianDivs.forEach(div => div.style.display = 'block');
+                englishDivs.forEach(div => div.style.display = 'none');
+                button.textContent = 'Язык: Русский';
+                mainTitle.textContent = 'Поцелуй у могилы';
+                document.title = 'Поцелуй у могилы';
+                dates.forEach(date => {
+                    date.textContent = date.dataset.ru;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
